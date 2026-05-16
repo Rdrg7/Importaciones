@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Importaciones</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<canvas id="starsCanvas"></canvas>
+
+<!-- ══════════════════════════════════════
+     SPLASH — Logo giratorio al cargar
+     ══════════════════════════════════════ -->
+<div class="splash-screen" id="splashScreen">
+  <!--
+    LOGO: pon tu archivo en la carpeta images/.
+    Prueba logo.png → logo.ico automáticamente.
+    El logo se muestra en su COLOR ORIGINAL (sin filtro).
+  -->
+  <img id="splashLogo"
+       src="images/logo.png"
+       alt="Logo"
+       class="splash-logo"
+       onerror="this.src='images/logo.ico'; this.onerror=null;">
+</div>
+
+<!-- ══════════════════════════════════════
+     HEADER
+     ══════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-left">
+    <!--
+      LOGO HEADER: mismo archivo, color original.
+    -->
+    <img id="headerLogo"
+         src="images/logo.png"
+         alt="Logo"
+         class="company-logo"
+         onerror="this.src='images/logo.ico'; this.onerror=null;">
+    <span class="site-title">Importaciones</span>
+  </div>
+
+  <div class="header-right">
+    <div class="panel-tabs">
+
+      <!-- PENDIENTES -->
+      <div class="panel-tab">
+        <button class="tab-btn" onclick="togglePanel('pendientes')">
+          <i class="fa-solid fa-list-check"></i> Pendientes
+          <i class="fa-solid fa-chevron-down tab-chevron" id="chevron-pendientes"></i>
+        </button>
+        <div class="tab-panel" id="panel-pendientes">
+          <div class="panel-inner">
+            <div class="panel-add-row">
+              <input type="text" id="pendienteInput" placeholder="Nuevo pendiente..."
+                     class="panel-input" onkeydown="if(event.key==='Enter')addPendiente()">
+              <button class="panel-add-btn" onclick="addPendiente()">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+            <ul class="pendientes-list" id="pendientesList"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTACTOS -->
+      <div class="panel-tab">
+        <button class="tab-btn" onclick="togglePanel('contactos')">
+          <i class="fa-solid fa-address-book"></i> Contactos
+          <i class="fa-solid fa-chevron-down tab-chevron" id="chevron-contactos"></i>
+        </button>
+        <div class="tab-panel wide-panel" id="panel-contactos">
+          <div class="panel-inner no-scroll">
+            <div class="panel-add-row">
+              <input type="text" id="contactoNombre" placeholder="Nombre..." class="panel-input">
+              <input type="text" id="contactoNumero" placeholder="Número..." class="panel-input">
+              <button class="panel-add-btn" onclick="addContacto()">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+            <ul class="contactos-list" id="contactosList"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRACKINGS -->
+      <div class="panel-tab">
+        <button class="tab-btn" onclick="togglePanel('trackings')">
+          <i class="fa-solid fa-satellite-dish"></i> Trackings
+          <i class="fa-solid fa-chevron-down tab-chevron" id="chevron-trackings"></i>
+        </button>
+        <div class="tab-panel wide-panel" id="panel-trackings">
+          <div class="panel-inner no-scroll">
+            <div class="panel-add-row tracking-add-row">
+              <input type="text" id="trackingIcon"  placeholder="fa-brands fa-fedex" class="panel-input icon-inp">
+              <input type="text" id="trackingLabel" placeholder="Nombre..." class="panel-input">
+              <input type="text" id="trackingUrl"   placeholder="https://..." class="panel-input">
+              <button class="panel-add-btn" onclick="addTracking()">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+            <ul class="trackings-list" id="trackingsList"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- CORREOS -->
+      <div class="panel-tab">
+        <button class="tab-btn" onclick="togglePanel('correos')">
+          <i class="fa-solid fa-envelope"></i> Correos
+          <i class="fa-solid fa-chevron-down tab-chevron" id="chevron-correos"></i>
+        </button>
+        <div class="tab-panel wide-panel" id="panel-correos">
+          <div class="panel-inner no-scroll">
+            <button class="correo-new-btn" onclick="showCorreoModal()">
+              <i class="fa-solid fa-plus"></i> Nueva plantilla
+            </button>
+            <ul class="correos-list" id="correosList"></ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════
+     MAIN
+     ══════════════════════════════════════ -->
+<main class="main-content">
+  <p class="section-desc">En este sitio encontrarás todos los enlaces utilizados por el área de importaciones.</p>
+
+  <div class="cards-scroll-area">
+    <div class="cards-grid" id="cardsGrid">
+
+      <!-- ── 12 RECUADROS FIJOS ── -->
+      <!-- Los recuadros ahora abren en nueva pestaña con window.open -->
+
+      <div class="menu-card purple" onclick="openLink('https://docs.google.com/spreadsheets/d/1vqW2o4t0xLTn2-8ZpMmTZoajFPDxNLuMDesY47PaOLk/edit?hl=es&gid=0#gid=0')">
+        <div class="card-actions">
+          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
+          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="card-title purple-text">Reporte de importaciones</div>
+        <div class="card-desc">Reporte detallado de todas las importaciones mensuales.</div>
+        <div class="card-arrow">→</div>
+      </div>
+
+      <div class="menu-card blue" onclick="openLink('https://docs.google.com/spreadsheets/d/1n15gyv-cDYsgmpKopn_zn5ZGboTj40Di6R7Ax2niZJQ/edit?gid=0#gid=0')">
+        <div class="card-actions">
+          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
+          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="card-title blue-text">Estatus de Importaciones y pedidos de SOE</div>
+        <div class="card-desc">Estatus de las cargas y pedidos de SOE en tránsito y entregas realizadas.</div>
+        <div class="card-arrow">→</div>
+      </div>
+
+      <div class="menu-card teal" onclick="openLink('http://apps.ocfyt.com/login')">
+        <div class="card-actions">
+          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
+          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="card-title teal-text">SOE</div>
+        <div class="card-desc">Sitio en donde se suben todas las solicitudes de compra.</div>
+        <div class="card-arrow">→</div>
+      </div>
+
+      <div class="menu-card amber" onclick="openLink('http://pos.ocfyt.com/login.aspx?ReturnUrl=%2fprivado%2fCajasChicas.aspx')">
+        <div class="card-actions">
+          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
+          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="card-title amber-text">Liquidaciones</div>
+        <div class="card-desc">Aquí se liquidan todas las facturas consumidas por caja chica y viáticos.</div>
+        <div class="card-arrow">→</div>
+      </div>
+
+      <div class="menu-card pink" onclick="openLink('https://www.combexim.com.gt/consultas/guias_publicos.php?permiso=publico')">
+        <div class="card-actions">
+          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
+          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="card-title pink-text">Combex-IM</div>
+        <div class="card-desc">Validar guías, imágenes e información de cargas aéreas para trámite de aduana.</div>
+        <div class="card-arrow">→</div>
+      </div>
+
+      <div class="menu-card green" onclick="openLink('https://docs.google.com/spreadsheets/d/1QqA6yXgyHiC0zN6HzWrOKms_L16ZEq11zQ-zrjMcL_M/edit?gid=82585135#gid=82585135')">
+        <div class="card-actions">
+          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
+          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="card-title green-text">Estatus Equipos Oftálmicos</div>
+        <div class="card-desc">Estatus detallado de las compras de equipos oftálmicos para control.</div>
+        <div class="card-arrow">→</div>
+      </div>
+
+      <div class="menu-card purple" onclick="openLink('https://docs.google.com/spreadsheets/d/1WprM46uPQgA8192gKURAzxRRJ8eYvsEa9_nz-HUsk6w/edit?gid=114083485#gid=114083485')">
+        <div class="card-actions">
+          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
+          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="card-title purple-text">Cálculo de importaciones</div>
+        <div class="card-desc">Calculador de impuestos para programar pagos de importaciones.</div>
+        <div class="card-arrow">→</div>
+      </div>
+
+      <div class="menu-card blue" onclick="openLink('https://declaraguate.sat.gob.gt/declaraguate-web/')">
+        <div class="card-actions">
+          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
+          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="card-title blue-text">DECLARAGUATE</div>
+        <div class="card-desc">Generar y consultar formularios de la SAT para pagar pólizas firmadas.</div>
+        <div class="card-arrow">→</div>
+      </div>
+
+      <div class="menu-card teal" onclick="openLink('https://docs.google.com/spreadsheets/d/1HnrDR1BX-RBreQuwIUP1TAcran0eHgOe/edit?pli=1&gid=10916557#gid=10916557')">
+        <div class="card-actions">
+          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
+          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="card-title teal-text">Comex Interno</div>
+        <div class="card-desc">Reporte interno de todas las cargas detalladas con fechas y valores.</div>
+        <div class="card-arrow">→</div>
+      </div>
+
+      <div class="menu-card amber" onclick="openLink('https://luxotticagroup.sharepoint.com/:x:/r/sites/LATAMSMARTCOMEX/_layouts/15/Doc.aspx?sourcedoc=%7B8CFFF9EF-5604-4B79-92D5-BA35CF987518%7D&file=COMEX%20Full%20Guatemala%202026.xlsx&action=default&mobileredirect=true')">
+        <div class="card-actions">
+          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
+          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="card-title amber-text">Comex Corporativo</div>
+        <div class="card-desc">Reporte Corporativo de todas las cargas detalladas con fechas y valores.</div>
+        <div class="card-arrow">→</div>
+      </div>
+
+      <div class="menu-card pink" onclick="openLink('https://drive.google.com/drive/folders/1DKN7hdow3VoI6CdPW8wXy4MTiK4Jzrb-')">
+        <div class="card-actions">
+          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
+          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="card-title pink-text">Importaciones escaneadas</div>
+        <div class="card-desc">Respaldos digitales de la documentación de cada importación.</div>
+        <div class="card-arrow">→</div>
+      </div>
+
+      <div class="menu-card green" onclick="openLink('https://rdrg7.github.io/Importaciones/generic.html')">
+        <div class="card-actions">
+          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
+          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="card-title green-text">Enlaces adicionales</div>
+        <div class="card-desc">Sitios de rastreo y demás sitios de apoyo utilizados en el área.</div>
+        <div class="card-arrow">→</div>
+      </div>
+
+      <!-- DINÁMICOS DE SUPABASE -->
+
+      <!-- BOTÓN AÑADIR -->
+      <div class="menu-card add-card" id="addCardBtn" onclick="showAddCardModal()">
+        <div class="add-card-icon"><i class="fa-solid fa-plus"></i></div>
+        <div class="card-title add-card-title">Añadir enlace</div>
+        <div class="card-desc">Agrega un nuevo acceso directo al área.</div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- ══════════════════════════════════════
+     MODAL — AÑADIR / EDITAR TARJETA
+     ══════════════════════════════════════ -->
+<div class="modal-overlay" id="cardModal" onclick="closeCardModal(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeCardModal()">✕</button>
+    <h3 class="modal-title" id="modalTitle">Nuevo enlace</h3>
+    <input type="hidden" id="editCardId" value="">
+    <input type="text" id="newCardTitle" placeholder="Título del enlace..."  class="modal-input">
+    <input type="text" id="newCardDesc"  placeholder="Descripción breve..."  class="modal-input">
+    <input type="text" id="newCardUrl"   placeholder="https://..."           class="modal-input">
+    <div class="color-picker-label">Color del título</div>
+    <div class="color-picker" id="colorPicker">
+      <button class="color-dot purple-bg selected" data-color="purple" onclick="selectColor(this)" title="Violeta"></button>
+      <button class="color-dot blue-bg"            data-color="blue"   onclick="selectColor(this)" title="Azul"></button>
+      <button class="color-dot teal-bg"            data-color="teal"   onclick="selectColor(this)" title="Verde azulado"></button>
+      <button class="color-dot amber-bg"           data-color="amber"  onclick="selectColor(this)" title="Ámbar"></button>
+      <button class="color-dot pink-bg"            data-color="pink"   onclick="selectColor(this)" title="Rosa"></button>
+      <button class="color-dot green-bg"           data-color="green"  onclick="selectColor(this)" title="Verde"></button>
+    </div>
+    <button class="modal-save-btn" id="modalSaveBtn" onclick="saveCard()">Guardar enlace</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MODAL — NUEVA / EDITAR PLANTILLA CORREO
+     ══════════════════════════════════════ -->
+<div class="modal-overlay" id="correoModal" onclick="closeCorreoModal(event)">
+  <div class="modal-box modal-box-lg">
+    <button class="modal-close" onclick="closeCorreoModal()">✕</button>
+    <h3 class="modal-title" id="correoModalTitle">Nueva plantilla de correo</h3>
+    <input type="hidden" id="editCorreoId" value="">
+
+    <input type="text" id="correoTitulo"       placeholder="Título de la plantilla (solo visible aquí)..." class="modal-input">
+    <input type="text" id="correoDestinatarios" placeholder="Para: correo1@empresa.com; correo2@empresa.com" class="modal-input">
+    <input type="text" id="correoAsunto"        placeholder="Asunto del correo..." class="modal-input">
+    <textarea id="correoMensaje" class="modal-textarea"
+              placeholder="Cuerpo del correo...&#10;&#10;Puedes escribir el texto completo aquí.&#10;Al abrir en Outlook aparecerá exactamente como lo escribas."></textarea>
+
+    <div class="correo-modal-actions">
+      <button class="modal-save-btn" id="correoSaveBtn" onclick="saveCorreo()">
+        <i class="fa-solid fa-floppy-disk"></i> Guardar plantilla
+      </button>
+      <button class="modal-open-btn" onclick="previewCorreo()">
+        <i class="fa-solid fa-envelope-open-text"></i> Abrir en Outlook
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+</body>
+</html>
