@@ -19,8 +19,8 @@
 const SUPABASE_URL      = 'https://TU_PROYECTO.supabase.co';
 const SUPABASE_ANON_KEY = 'TU_ANON_KEY_AQUI';
 
-const { createClient } = supabase;
-const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SUPABASE_URL      = 'https://omceoxlwgxpzbttdkaop.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
 
 
 // ─────────────────────────────────────────
