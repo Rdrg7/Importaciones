@@ -16,8 +16,8 @@
      nuevos NO se guardarán hasta configurar Supabase.
    ========================================= */
 
-const SUPABASE_URL      = 'https://TU_PROYECTO.supabase.co';
-const SUPABASE_ANON_KEY = 'TU_ANON_KEY_AQUI';
+const SUPABASE_URL      = 'https://omceoxlwgxpzbttdkaop.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9tY2VveGx3Z3hwemJ0dGRrYW9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NDM3NTcsImV4cCI6MjA5NDUxOTc1N30.o1FL82ladUZdmlZWfQmE7r5AuiYupAh9PspVC4ASXq0';
 
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
