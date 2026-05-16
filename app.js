@@ -16,8 +16,8 @@
      nuevos NO se guardarán hasta configurar Supabase.
    ========================================= */
 
-const SUPABASE_URL      = 'https://omceoxlwgxpzbttdkaop.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9tY2VveGx3Z3hwemJ0dGRrYW9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NDM3NTcsImV4cCI6MjA5NDUxOTc1N30.o1FL82ladUZdmlZWfQmE7r5AuiYupAh9PspVC4ASXq0';
+const SUPABASE_URL      = 'https://TU_PROYECTO.supabase.co';
+const SUPABASE_ANON_KEY = 'TU_ANON_KEY_AQUI';
 
 const { createClient } = supabase;
 const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -167,8 +167,8 @@ function appendPendienteDOM(id, texto) {
   li.className = 'pendiente-item';
   li.dataset.id = id;
   li.innerHTML = `
-    <span class="del-dot" onclick="deletePendiente(${id},this)" title="Marcar completado"></span>
-    <span>${texto}</span>`;
+    <span>${texto}</span>
+    <button class="del-btn" onclick="deletePendiente(${id},this)"><i class="fa-solid fa-xmark"></i></button>`;
   document.getElementById('pendientesList').appendChild(li);
 }
 
@@ -182,9 +182,9 @@ async function addPendiente() {
   input.value = '';
 }
 
-async function deletePendiente(id, dot) {
+async function deletePendiente(id, btn) {
   await db.from('pendientes').delete().eq('id', id);
-  dot.closest('.pendiente-item').remove();
+  btn.closest('.pendiente-item').remove();
 }
 
 
@@ -231,16 +231,16 @@ async function deleteContacto(id, btn) {
 async function loadTrackings() {
   const { data, error } = await db.from('trackings').select('*').order('created_at');
   if (error) { console.warn('Supabase trackings:', error.message); return; }
-  data.forEach(t => appendTrackingDOM(t.id, t.icono, t.label, t.url));
+  data.forEach(t => appendTrackingDOM(t.id, t.icono, t.label, t.url, t.color));
 }
 
-function appendTrackingDOM(id, icono, label, url) {
+function appendTrackingDOM(id, icono, label, url, color) {
   const li = document.createElement('li');
   li.className = 'tracking-item';
   li.dataset.id = id;
   const iconHtml = icono
-    ? `<i class="${icono} tracking-icon-preview"></i>`
-    : `<i class="fa-solid fa-link tracking-icon-preview"></i>`;
+    ? `<i class="${icono} tracking-icon-preview" style="color:var(--${color||'teal'})"></i>`
+    : `<i class="fa-solid fa-link tracking-icon-preview" style="color:var(--${color||'teal'})"></i>`;
   li.innerHTML = `
     ${iconHtml}
     <a href="${url}" target="_blank" rel="noopener" class="tracking-link">${label}</a>
@@ -252,10 +252,11 @@ async function addTracking() {
   const icono = document.getElementById('trackingIcon').value.trim();
   const label = document.getElementById('trackingLabel').value.trim();
   const url   = document.getElementById('trackingUrl').value.trim();
+  const color = document.querySelector('#trackings-color-picker .color-dot.selected')?.dataset.color || 'teal';
   if (!label || !url) return;
-  const { data, error } = await db.from('trackings').insert([{ icono, label, url }]).select();
+  const { data, error } = await db.from('trackings').insert([{ icono, label, url, color }]).select();
   if (error) { alert('Error. ¿Configuraste Supabase?'); return; }
-  appendTrackingDOM(data[0].id, data[0].icono, data[0].label, data[0].url);
+  appendTrackingDOM(data[0].id, data[0].icono, data[0].label, data[0].url, data[0].color);
   document.getElementById('trackingIcon').value  = '';
   document.getElementById('trackingLabel').value = '';
   document.getElementById('trackingUrl').value   = '';
@@ -275,11 +276,11 @@ async function deleteTracking(id, btn) {
 async function loadCorreos() {
   const { data, error } = await db.from('correos').select('*').order('created_at');
   if (error) { console.warn('Supabase correos:', error.message); return; }
-  data.forEach(c => appendCorreoDOM(c.id, c.titulo, c.destinatarios, c.asunto, c.mensaje));
+  data.forEach(c => appendCorreoDOM(c.id, c.titulo, c.destinatarios, c.cc, c.asunto, c.mensaje));
 }
 
 // ── Agregar a la lista del panel ──
-function appendCorreoDOM(id, titulo, destinatarios, asunto, mensaje) {
+function appendCorreoDOM(id, titulo, destinatarios, cc, asunto, mensaje) {
   const li = document.createElement('li');
   li.className = 'correo-item';
   li.dataset.id = id;
@@ -287,7 +288,7 @@ function appendCorreoDOM(id, titulo, destinatarios, asunto, mensaje) {
     <span class="correo-item-title" title="${titulo}">${titulo}</span>
     <div class="correo-item-actions">
       <button class="correo-item-btn open-btn" title="Abrir en Outlook"
-              onclick="abrirEnOutlook('${encodeData(destinatarios)}','${encodeData(asunto)}','${encodeData(mensaje)}')">
+              onclick="abrirEnOutlook('${encodeData(destinatarios)}','${encodeData(cc)}','${encodeData(asunto)}','${encodeData(mensaje)}')">
         <i class="fa-solid fa-envelope-open-text"></i>
       </button>
       <button class="correo-item-btn edit-btn" title="Editar"
@@ -309,15 +310,16 @@ function encodeData(str) {
 
 // ── Abrir en Outlook vía mailto ──
 //    Outlook 2016 respeta el protocolo mailto: y lo abre directamente.
-function abrirEnOutlook(destinatarios, asunto, mensaje) {
+function abrirEnOutlook(destinatarios, cc, asunto, mensaje) {
   const to      = decodeData(destinatarios);
+  const ccTo    = decodeData(cc);
   const subject = decodeData(asunto);
   const body    = decodeData(mensaje);
 
-  // mailto: estándar — Outlook 2016 lo intercepta automáticamente
-  const mailto = `mailto:${encodeURIComponent(to)}`
+  let mailto = `mailto:${encodeURIComponent(to)}`
     + `?subject=${encodeURIComponent(subject)}`
     + `&body=${encodeURIComponent(body)}`;
+  if (ccTo) mailto += `&cc=${encodeURIComponent(ccTo)}`;
 
   window.location.href = mailto;
 }
@@ -352,6 +354,7 @@ function closeCorreoModal(e) {
 async function saveCorreo() {
   const titulo        = document.getElementById('correoTitulo').value.trim();
   const destinatarios = document.getElementById('correoDestinatarios').value.trim();
+  const cc            = document.getElementById('correoCC').value.trim();
   const asunto        = document.getElementById('correoAsunto').value.trim();
   const mensaje       = document.getElementById('correoMensaje').value.trim();
   const editId        = document.getElementById('editCorreoId').value;
@@ -359,25 +362,22 @@ async function saveCorreo() {
   if (!titulo) { alert('El título es obligatorio.'); return; }
 
   if (editId) {
-    // Actualizar
     const { error } = await db.from('correos')
-      .update({ titulo, destinatarios, asunto, mensaje })
+      .update({ titulo, destinatarios, cc, asunto, mensaje })
       .eq('id', editId);
     if (error) { alert('Error al guardar.'); return; }
 
-    // Actualizar DOM
     const li = document.querySelector(`.correo-item[data-id="${editId}"]`);
     if (li) {
       li.querySelector('.correo-item-title').textContent = titulo;
       li.querySelector('.open-btn').setAttribute('onclick',
-        `abrirEnOutlook('${encodeData(destinatarios)}','${encodeData(asunto)}','${encodeData(mensaje)}')`);
+        `abrirEnOutlook('${encodeData(destinatarios)}','${encodeData(cc)}','${encodeData(asunto)}','${encodeData(mensaje)}')`);
     }
   } else {
-    // Insertar
     const { data, error } = await db.from('correos')
-      .insert([{ titulo, destinatarios, asunto, mensaje }]).select();
+      .insert([{ titulo, destinatarios, cc, asunto, mensaje }]).select();
     if (error) { alert('Error. ¿Configuraste Supabase?'); return; }
-    appendCorreoDOM(data[0].id, data[0].titulo, data[0].destinatarios, data[0].asunto, data[0].mensaje);
+    appendCorreoDOM(data[0].id, data[0].titulo, data[0].destinatarios, data[0].cc, data[0].asunto, data[0].mensaje);
   }
 
   document.getElementById('correoModal').classList.remove('open');
@@ -390,6 +390,7 @@ async function editCorreo(id) {
 
   document.getElementById('correoTitulo').value        = data.titulo        || '';
   document.getElementById('correoDestinatarios').value = data.destinatarios || '';
+  document.getElementById('correoCC').value            = data.cc            || '';
   document.getElementById('correoAsunto').value        = data.asunto        || '';
   document.getElementById('correoMensaje').value       = data.mensaje       || '';
 
@@ -406,9 +407,10 @@ async function deleteCorreo(id, btn) {
 // ── "Abrir en Outlook" desde el modal (previa al guardar) ──
 function previewCorreo() {
   const destinatarios = document.getElementById('correoDestinatarios').value.trim();
+  const cc            = document.getElementById('correoCC').value.trim();
   const asunto        = document.getElementById('correoAsunto').value.trim();
   const mensaje       = document.getElementById('correoMensaje').value.trim();
-  abrirEnOutlook(destinatarios, asunto, mensaje);
+  abrirEnOutlook(destinatarios, cc, asunto, mensaje);
 }
 
 
@@ -418,7 +420,7 @@ function previewCorreo() {
 async function loadCards() {
   const { data, error } = await db.from('cards').select('*').order('created_at');
   if (error) { console.warn('Supabase cards:', error.message); return; }
-  data.forEach(c => appendDynamicCardDOM(c.id, c.title, c.description, c.url, c.color));
+  data.forEach(c => appendDynamicCardDOM(c.id, c.title, c.desc, c.url, c.color));
 }
 
 function appendDynamicCardDOM(id, title, desc, url, color) {
@@ -550,7 +552,7 @@ async function saveCard() {
 
   // Card dinámica — editar en Supabase
   if (editId) {
-    const { error } = await db.from('cards').update({ title, description: desc, url, color }).eq('id', editId);
+    const { error } = await db.from('cards').update({ title, desc, url, color }).eq('id', editId);
     if (error) { alert('Error al guardar.'); return; }
     const card    = document.querySelector(`.menu-card[data-id="${editId}"]`);
     const titleEl = card.querySelector('.card-title');
@@ -566,7 +568,7 @@ async function saveCard() {
   }
 
   // Card nueva — insertar en Supabase
-  const { data, error } = await db.from('cards').insert([{ title, description: desc, url, color }]).select();
+  const { data, error } = await db.from('cards').insert([{ title, desc, url, color }]).select();
   if (error) { alert('Error. ¿Configuraste Supabase?'); return; }
   appendDynamicCardDOM(data[0].id, data[0].title, data[0].desc, data[0].url, data[0].color);
   modal.classList.remove('open');
@@ -582,9 +584,14 @@ function selectColor(dot) {
 }
 
 function selectColorByValue(color) {
-  document.querySelectorAll('.color-dot').forEach(d => {
+  document.querySelectorAll('#colorPicker .color-dot').forEach(d => {
     d.classList.toggle('selected', d.dataset.color === color);
   });
+}
+
+function selectTrackingColor(dot) {
+  document.querySelectorAll('#trackings-color-picker .color-dot').forEach(d => d.classList.remove('selected'));
+  dot.classList.add('selected');
 }
 
 
