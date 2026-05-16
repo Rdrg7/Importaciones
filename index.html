@@ -103,6 +103,14 @@
                 <i class="fa-solid fa-plus"></i>
               </button>
             </div>
+            <div class="color-picker" id="trackings-color-picker" style="padding: 6px 4px 2px;">
+              <button class="color-dot purple-bg" data-color="purple" onclick="selectTrackingColor(this)" title="Violeta"></button>
+              <button class="color-dot blue-bg selected" data-color="blue"   onclick="selectTrackingColor(this)" title="Azul"></button>
+              <button class="color-dot teal-bg"   data-color="teal"   onclick="selectTrackingColor(this)" title="Verde azulado"></button>
+              <button class="color-dot amber-bg"  data-color="amber"  onclick="selectTrackingColor(this)" title="Ámbar"></button>
+              <button class="color-dot pink-bg"   data-color="pink"   onclick="selectTrackingColor(this)" title="Rosa"></button>
+              <button class="color-dot green-bg"  data-color="green"  onclick="selectTrackingColor(this)" title="Verde"></button>
+            </div>
             <ul class="trackings-list" id="trackingsList"></ul>
           </div>
         </div>
@@ -308,6 +316,7 @@
 
     <input type="text" id="correoTitulo"       placeholder="Título de la plantilla (solo visible aquí)..." class="modal-input">
     <input type="text" id="correoDestinatarios" placeholder="Para: correo1@empresa.com; correo2@empresa.com" class="modal-input">
+    <input type="text" id="correoCC"            placeholder="Con copia a: correo@empresa.com" class="modal-input">
     <input type="text" id="correoAsunto"        placeholder="Asunto del correo..." class="modal-input">
     <textarea id="correoMensaje" class="modal-textarea"
               placeholder="Cuerpo del correo...&#10;&#10;Puedes escribir el texto completo aquí.&#10;Al abrir en Outlook aparecerá exactamente como lo escribas."></textarea>
