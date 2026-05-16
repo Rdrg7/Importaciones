@@ -16,8 +16,11 @@
      nuevos NO se guardarán hasta configurar Supabase.
    ========================================= */
 
-const SUPABASE_URL      = 'https://omceoxlwgxpzbttdkaop.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9tY2VveGx3Z3hwemJ0dGRrYW9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5NDM3NTcsImV4cCI6MjA5NDUxOTc1N30.o1FL82ladUZdmlZWfQmE7r5AuiYupAh9PspVC4ASXq0';
+const SUPABASE_URL      = 'https://TU_PROYECTO.supabase.co';
+const SUPABASE_ANON_KEY = 'TU_ANON_KEY_AQUI';
+
+const { createClient } = supabase;
+const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 
 // ─────────────────────────────────────────
@@ -334,6 +337,7 @@ function showCorreoModal(id) {
   if (!id) {
     document.getElementById('correoTitulo').value        = '';
     document.getElementById('correoDestinatarios').value = '';
+    document.getElementById('correoCC').value            = '';
     document.getElementById('correoAsunto').value        = '';
     document.getElementById('correoMensaje').value       = '';
   }
@@ -417,7 +421,7 @@ function previewCorreo() {
 async function loadCards() {
   const { data, error } = await db.from('cards').select('*').order('created_at');
   if (error) { console.warn('Supabase cards:', error.message); return; }
-  data.forEach(c => appendDynamicCardDOM(c.id, c.title, c.desc, c.url, c.color));
+  data.forEach(c => appendDynamicCardDOM(c.id, c.title, c.description, c.url, c.color));
 }
 
 function appendDynamicCardDOM(id, title, desc, url, color) {
@@ -549,7 +553,7 @@ async function saveCard() {
 
   // Card dinámica — editar en Supabase
   if (editId) {
-    const { error } = await db.from('cards').update({ title, desc, url, color }).eq('id', editId);
+    const { error } = await db.from('cards').update({ title, description: desc, url, color }).eq('id', editId);
     if (error) { alert('Error al guardar.'); return; }
     const card    = document.querySelector(`.menu-card[data-id="${editId}"]`);
     const titleEl = card.querySelector('.card-title');
@@ -565,9 +569,9 @@ async function saveCard() {
   }
 
   // Card nueva — insertar en Supabase
-  const { data, error } = await db.from('cards').insert([{ title, desc, url, color }]).select();
+  const { data, error } = await db.from('cards').insert([{ title, description: desc, url, color }]).select();
   if (error) { alert('Error. ¿Configuraste Supabase?'); return; }
-  appendDynamicCardDOM(data[0].id, data[0].title, data[0].desc, data[0].url, data[0].color);
+  appendDynamicCardDOM(data[0].id, data[0].title, data[0].description, data[0].url, data[0].color);
   modal.classList.remove('open');
 }
 
