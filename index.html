@@ -145,124 +145,51 @@
   <div class="cards-scroll-area">
     <div class="cards-grid" id="cardsGrid">
 
-      <!-- ── 12 RECUADROS FIJOS ── -->
-      <!-- Los recuadros ahora abren en nueva pestaña con window.open -->
-
-      <div class="menu-card purple" onclick="openLink('https://docs.google.com/spreadsheets/d/1vqW2o4t0xLTn2-8ZpMmTZoajFPDxNLuMDesY47PaOLk/edit?hl=es&gid=0#gid=0')">
-        <div class="card-actions">
-          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
-          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
+      <!-- BOTÓN AÑADIR -->
         <div class="card-title purple-text">Reporte de importaciones</div>
         <div class="card-desc">Reporte detallado de todas las importaciones mensuales.</div>
         <div class="card-arrow">→</div>
       </div>
-
-      <div class="menu-card blue" onclick="openLink('https://docs.google.com/spreadsheets/d/1n15gyv-cDYsgmpKopn_zn5ZGboTj40Di6R7Ax2niZJQ/edit?gid=0#gid=0')">
-        <div class="card-actions">
-          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
-          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
         <div class="card-title blue-text">Estatus de Importaciones y pedidos de SOE</div>
         <div class="card-desc">Estatus de las cargas y pedidos de SOE en tránsito y entregas realizadas.</div>
         <div class="card-arrow">→</div>
       </div>
-
-      <div class="menu-card teal" onclick="openLink('http://apps.ocfyt.com/login')">
-        <div class="card-actions">
-          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
-          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
         <div class="card-title teal-text">SOE</div>
         <div class="card-desc">Sitio en donde se suben todas las solicitudes de compra.</div>
         <div class="card-arrow">→</div>
       </div>
-
-      <div class="menu-card amber" onclick="openLink('http://pos.ocfyt.com/login.aspx?ReturnUrl=%2fprivado%2fCajasChicas.aspx')">
-        <div class="card-actions">
-          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
-          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
         <div class="card-title amber-text">Liquidaciones</div>
         <div class="card-desc">Aquí se liquidan todas las facturas consumidas por caja chica y viáticos.</div>
         <div class="card-arrow">→</div>
       </div>
-
-      <div class="menu-card pink" onclick="openLink('https://www.combexim.com.gt/consultas/guias_publicos.php?permiso=publico')">
-        <div class="card-actions">
-          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
-          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
         <div class="card-title pink-text">Combex-IM</div>
         <div class="card-desc">Validar guías, imágenes e información de cargas aéreas para trámite de aduana.</div>
         <div class="card-arrow">→</div>
       </div>
-
-      <div class="menu-card green" onclick="openLink('https://docs.google.com/spreadsheets/d/1QqA6yXgyHiC0zN6HzWrOKms_L16ZEq11zQ-zrjMcL_M/edit?gid=82585135#gid=82585135')">
-        <div class="card-actions">
-          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
-          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
         <div class="card-title green-text">Estatus Equipos Oftálmicos</div>
         <div class="card-desc">Estatus detallado de las compras de equipos oftálmicos para control.</div>
         <div class="card-arrow">→</div>
       </div>
-
-      <div class="menu-card purple" onclick="openLink('https://docs.google.com/spreadsheets/d/1WprM46uPQgA8192gKURAzxRRJ8eYvsEa9_nz-HUsk6w/edit?gid=114083485#gid=114083485')">
-        <div class="card-actions">
-          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
-          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
         <div class="card-title purple-text">Cálculo de importaciones</div>
         <div class="card-desc">Calculador de impuestos para programar pagos de importaciones.</div>
         <div class="card-arrow">→</div>
       </div>
-
-      <div class="menu-card blue" onclick="openLink('https://declaraguate.sat.gob.gt/declaraguate-web/')">
-        <div class="card-actions">
-          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
-          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
         <div class="card-title blue-text">DECLARAGUATE</div>
         <div class="card-desc">Generar y consultar formularios de la SAT para pagar pólizas firmadas.</div>
         <div class="card-arrow">→</div>
       </div>
-
-      <div class="menu-card teal" onclick="openLink('https://docs.google.com/spreadsheets/d/1HnrDR1BX-RBreQuwIUP1TAcran0eHgOe/edit?pli=1&gid=10916557#gid=10916557')">
-        <div class="card-actions">
-          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
-          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
         <div class="card-title teal-text">Comex Interno</div>
         <div class="card-desc">Reporte interno de todas las cargas detalladas con fechas y valores.</div>
         <div class="card-arrow">→</div>
       </div>
-
-      <div class="menu-card amber" onclick="openLink('https://luxotticagroup.sharepoint.com/:x:/r/sites/LATAMSMARTCOMEX/_layouts/15/Doc.aspx?sourcedoc=%7B8CFFF9EF-5604-4B79-92D5-BA35CF987518%7D&file=COMEX%20Full%20Guatemala%202026.xlsx&action=default&mobileredirect=true')">
-        <div class="card-actions">
-          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
-          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
         <div class="card-title amber-text">Comex Corporativo</div>
         <div class="card-desc">Reporte Corporativo de todas las cargas detalladas con fechas y valores.</div>
         <div class="card-arrow">→</div>
       </div>
-
-      <div class="menu-card pink" onclick="openLink('https://drive.google.com/drive/folders/1DKN7hdow3VoI6CdPW8wXy4MTiK4Jzrb-')">
-        <div class="card-actions">
-          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
-          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
         <div class="card-title pink-text">Importaciones escaneadas</div>
         <div class="card-desc">Respaldos digitales de la documentación de cada importación.</div>
         <div class="card-arrow">→</div>
       </div>
-
-      <div class="menu-card green" onclick="openLink('https://rdrg7.github.io/Importaciones/generic.html')">
-        <div class="card-actions">
-          <button class="card-btn-edit" onclick="editStaticCard(event,this)"><i class="fa-solid fa-pen"></i></button>
-          <button class="card-btn-del"  onclick="deleteStaticCard(event,this)"><i class="fa-solid fa-xmark"></i></button>
-        </div>
         <div class="card-title green-text">Enlaces adicionales</div>
         <div class="card-desc">Sitios de rastreo y demás sitios de apoyo utilizados en el área.</div>
         <div class="card-arrow">→</div>
