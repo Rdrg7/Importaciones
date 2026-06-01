@@ -130,15 +130,13 @@ html, body {
   overflow: hidden;
 }
 .tab-panel.wide-panel { width: 370px; }
-.tab-panel.open { max-height: 500px; opacity: 1; pointer-events: all; }
+.tab-panel.open { max-height: 700px; opacity: 1; pointer-events: all; }
 
 .panel-inner {
   padding: 14px;
   display: flex; flex-direction: column; gap: 10px;
-  max-height: 500px;
-  overflow: hidden;
 }
-.panel-inner.no-scroll { overflow: hidden; }
+.panel-inner.no-scroll { overflow: visible; }
 
 /* Fila de añadir */
 .panel-add-row { display: flex; gap: 6px; align-items: center; }
@@ -168,11 +166,8 @@ html, body {
 /* Listas */
 .pendientes-list, .contactos-list, .trackings-list, .correos-list {
   list-style: none; display: flex; flex-direction: column; gap: 6px;
-  overflow-y: auto; max-height: 320px;
-  padding-right: 4px;
+  max-height: 300px; overflow-y: auto; padding-right: 3px;
 }
-
-/* Scrollbar estilizada para las listas */
 .pendientes-list::-webkit-scrollbar,
 .contactos-list::-webkit-scrollbar,
 .trackings-list::-webkit-scrollbar,
@@ -203,7 +198,7 @@ html, body {
 
 .tracking-icon-preview { color: var(--blue); font-size: 15px; flex-shrink: 0; }
 .tracking-link {
-  color: var(--blue); text-decoration: none;
+  color: #ffffff; text-decoration: none;
   font-size: 13px; flex: 1;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
@@ -261,7 +256,7 @@ html, body {
 }
 
 .section-desc {
-  font-size: 13px; font-weight: 300; color: var(--muted);
+  font-size: 16px; font-weight: 300; color: var(--muted);
   letter-spacing: 0.3px; text-align: center;
   margin-bottom: 14px; padding: 0 20px;
 }
