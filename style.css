@@ -130,13 +130,23 @@ html, body {
   overflow: hidden;
 }
 .tab-panel.wide-panel { width: 370px; }
-.tab-panel.open { max-height: 700px; opacity: 1; pointer-events: all; }
+.tab-panel.open { max-height: 420px; opacity: 1; pointer-events: all; }
 
 .panel-inner {
   padding: 14px;
   display: flex; flex-direction: column; gap: 10px;
+  max-height: 420px;
+  overflow-y: auto;
 }
-.panel-inner.no-scroll { overflow: visible; }
+.panel-inner.no-scroll {
+  overflow-y: auto;
+}
+
+/* Scrollbar de pestañas */
+.panel-inner::-webkit-scrollbar { width: 4px; }
+.panel-inner::-webkit-scrollbar-track { background: transparent; }
+.panel-inner::-webkit-scrollbar-thumb { background: rgba(167,139,250,0.30); border-radius: 3px; }
+.panel-inner::-webkit-scrollbar-thumb:hover { background: rgba(167,139,250,0.55); }
 
 /* Fila de añadir */
 .panel-add-row { display: flex; gap: 6px; align-items: center; }
@@ -166,20 +176,7 @@ html, body {
 /* Listas */
 .pendientes-list, .contactos-list, .trackings-list, .correos-list {
   list-style: none; display: flex; flex-direction: column; gap: 6px;
-  max-height: 300px; overflow-y: auto; padding-right: 3px;
 }
-.pendientes-list::-webkit-scrollbar,
-.contactos-list::-webkit-scrollbar,
-.trackings-list::-webkit-scrollbar,
-.correos-list::-webkit-scrollbar { width: 4px; }
-.pendientes-list::-webkit-scrollbar-track,
-.contactos-list::-webkit-scrollbar-track,
-.trackings-list::-webkit-scrollbar-track,
-.correos-list::-webkit-scrollbar-track { background: transparent; }
-.pendientes-list::-webkit-scrollbar-thumb,
-.contactos-list::-webkit-scrollbar-thumb,
-.trackings-list::-webkit-scrollbar-thumb,
-.correos-list::-webkit-scrollbar-thumb { background: var(--border-h); border-radius: 4px; }
 
 .pendiente-item, .contacto-item, .tracking-item, .correo-item {
   display: flex; align-items: center; gap: 8px;
